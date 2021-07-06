@@ -1,0 +1,14 @@
+*~
+*.pyc
+*.orig
+*.rej
+*.sw[a-p]
+
+node_modules/
+
+
+*LOCAL*
+*REMOTE*
+*BACKUP*
+*BASE*
+
