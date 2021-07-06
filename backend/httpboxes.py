@@ -6,6 +6,7 @@ import http.server
 def get_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument('--port', type = int, default=8000)
+    parser.add_argument('--staticdir', type = str, default="../frontend/dist")
     return parser
 
 
@@ -23,17 +24,26 @@ def calc_boxes_size(self,width,height,max_area):
     return [ (0, width, 0, height), ]
 
 
-class BoxesCalc(http.server.BaseHTTPRequestHandler):
+
+def boxescalc(opts):
+    class BoxesCalc(http.server.SimpleHTTPRequestHandler):
+        def __init__(self,*args,**kwargs):
+            kwargs['directory'] = opts.staticdir
+            super().__init__(*args,**kwargs)
+
+        def do_GET(self,*args):
+            print(self.path,args)
+            if self.path.startswith("/calculate/"):
+                self.send_error(404,"Implementation required")
+            else:
+                super().do_GET(*args)
 
 
-    def do_GET(self,*args):
-        print(self.path,args)
-        self.send_error(404,"Implementation required")
-
+    return BoxesCalc
 
 def main(opts):
     listen_to = ('',opts.port)
-    s = http.server.HTTPServer(listen_to, BoxesCalc)
+    s = http.server.HTTPServer(listen_to, boxescalc(opts),)
     print("serving at port", opts.port)
     s.serve_forever()
 
