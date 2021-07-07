@@ -5,7 +5,8 @@ module.exports = {
   plugins: [
     new CopyPlugin({
      patterns: [
-      { from: 'static', to: 'static' },
+// TODO : Enable this if you have any static asses you need to include
+//      { from: 'static', to: 'static' },
       { from: 'index.html', to: 'index.html', toType: 'file'},
     ]}),
   ],
